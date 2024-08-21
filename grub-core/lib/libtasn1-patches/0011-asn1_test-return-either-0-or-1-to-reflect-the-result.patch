@@ -1,0 +1,72 @@
+From ed09a767617e0c58b13b61ec82d728c5c533a0f3 Mon Sep 17 00:00:00 2001
+From: Gary Lin <glin@suse.com>
+Date: Fri, 16 Aug 2024 15:32:39 +0800
+Subject: [PATCH 11/12] asn1_test: return either 0 or 1 to reflect the results
+
+Some testcases use exit() to end the test. Since all the asn1 testcases
+are invoked as functions, this commit replaces exit() with return to
+reflect the test results, so that the main test function can check the
+results.
+
+Signed-off-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Gary Lin <glin@suse.com>
+---
+ grub-core/tests/asn1/tests/CVE-2018-1000654.c | 6 +++---
+ grub-core/tests/asn1/tests/reproducers.c      | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/grub-core/tests/asn1/tests/CVE-2018-1000654.c b/grub-core/tests/asn1/tests/CVE-2018-1000654.c
+index 9eb4d7979..b78667900 100644
+--- a/grub-core/tests/asn1/tests/CVE-2018-1000654.c
++++ b/grub-core/tests/asn1/tests/CVE-2018-1000654.c
+@@ -40,7 +40,7 @@ test_CVE_2018_1000654 (void)
+     {
+       grub_printf ("Error: %s\nErrorDescription = %s\n\n",
+ 		   asn1_strerror (result), errorDescription);
+-      exit (1);
++      return 1;
+     }
+ 
+   asn1_delete_structure (&definitions);
+@@ -52,10 +52,10 @@ test_CVE_2018_1000654 (void)
+     {
+       grub_printf ("Error: %s\nErrorDescription = %s\n\n",
+ 		   asn1_strerror (result), errorDescription);
+-      exit (1);
++      return 1;
+     }
+ 
+   asn1_delete_structure (&definitions);
+ 
+-  exit (0);
++  return 0;
+ }
+diff --git a/grub-core/tests/asn1/tests/reproducers.c b/grub-core/tests/asn1/tests/reproducers.c
+index 278cfed6c..0e3c9fd65 100644
+--- a/grub-core/tests/asn1/tests/reproducers.c
++++ b/grub-core/tests/asn1/tests/reproducers.c
+@@ -59,7 +59,7 @@ test_reproducers (void)
+   if (result != ASN1_SUCCESS)
+     {
+       grub_printf ("Error: %s\nErrorDescription = %s\n\n", asn1_strerror (result), errorDescription);
+-      exit (EXIT_FAILURE);
++      return 1;
+     }
+ 
+   asn1_delete_structure (&definitions);
+@@ -69,10 +69,10 @@ test_reproducers (void)
+   if (result != ASN1_SUCCESS)
+     {
+       grub_printf ("Error: %s\nErrorDescription = %s\n\n", asn1_strerror (result), errorDescription);
+-      exit (EXIT_FAILURE);
++      return 1;
+     }
+ 
+   asn1_delete_structure (&definitions);
+ 
+-  exit (EXIT_SUCCESS);
++  return 0;
+ }
+-- 
+2.35.3
+
