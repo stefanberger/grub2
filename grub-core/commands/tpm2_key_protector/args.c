@@ -121,7 +121,7 @@ grub_tpm2_protector_parse_tpm_handle (const char *value, TPM_HANDLE_t *handle)
     return grub_error (GRUB_ERR_BAD_NUMBER, "TPM handle value '%s' is not a number", value);
 
   if (num > GRUB_UINT_MAX)
-    return grub_error (GRUB_ERR_OUT_OF_RANGE, "Value %lu is too large to be a TPM handle, TPM handles are unsigned 32-bit integers", num);
+    return grub_error (GRUB_ERR_OUT_OF_RANGE, "Value %lu is too large to be a TPM handle, TPM handles are unsigned 32-bit integers", (unsigned long)num);
 
   *handle = (TPM_HANDLE_t) num;
 
